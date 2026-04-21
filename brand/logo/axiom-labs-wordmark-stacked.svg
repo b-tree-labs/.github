@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Stacked wordmark: mark above text, centered. -->
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="500" fill="#f8f6f1"/>
+  <g transform="translate(300, 50) scale(0.391)">
+    <line x1="86" y1="256" x2="396" y2="256"
+          stroke="#1a1a1f" stroke-width="34"
+          stroke-linecap="square"/>
+    <line x1="256" y1="96" x2="256" y2="406"
+          stroke="#1a1a1f" stroke-width="34"
+          stroke-linecap="square"/>
+    <circle cx="256" cy="256" r="28" fill="#1a1a1f"/>
+    <line x1="396" y1="256" x2="426" y2="256"
+          stroke="#BF5700" stroke-width="34"
+          stroke-linecap="square"/>
+  </g>
+  <text x="400" y="385"
+        text-anchor="middle"
+        font-family="'Space Grotesk', 'Neue Haas Grotesk Display', 'Helvetica Neue', system-ui, sans-serif"
+        font-weight="500"
+        font-size="72"
+        letter-spacing="13"
+        fill="#1a1a1f">AXIOM LABS</text>
+</svg>

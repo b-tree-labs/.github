@@ -1,0 +1,77 @@
+# Copyright (c) 2026 B-Tree Ventures, LLC
+# SPDX-License-Identifier: Apache-2.0
+#
+# Axiom Labs — reusable MkDocs Material deploy workflow.
+#
+# Builds docs with MkDocs Material and deploys to GitHub Pages on push to
+# main. Safe to skip for repos without a docs site.
+#
+# Consumer usage:
+#     jobs:
+#       docs:
+#         uses: axiom-labs-os/.github/.github/workflows/python-docs.yml@v1
+#         with:
+#           package-name: dendra
+#           docs-extras: 'docs'
+
+name: python-docs
+
+on:
+  workflow_call:
+    inputs:
+      package-name:
+        description: 'Package import name (for logging).'
+        type: string
+        required: true
+      docs-extras:
+        description: 'Extras to install for docs build (e.g. "docs").'
+        type: string
+        default: 'docs'
+      python-version:
+        description: 'Python version used for docs build.'
+        type: string
+        default: '3.13'
+      mkdocs-config:
+        description: 'Path to mkdocs.yml (relative to repo root).'
+        type: string
+        default: 'mkdocs.yml'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build docs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+          cache: pip
+      - name: Install docs deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e '.[${{ inputs.docs-extras }}]'
+      - name: Build
+        run: mkdocs build --strict --config-file ${{ inputs.mkdocs-config }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    name: Deploy to Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

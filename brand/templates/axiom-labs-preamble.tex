@@ -1,0 +1,60 @@
+% Axiom Labs LaTeX preamble.
+%
+% Drop-in preamble fragment for papers published under the Axiom Labs
+% portfolio. Assumes an article-class document (acmart, lipics, ieeetran
+% and others are also supported — adjust font packages to taste).
+%
+% Usage:
+%   \input{path/to/axiom-labs-preamble.tex}
+
+% ----------------------------------------------------- Palette (matches brand)
+\usepackage{xcolor}
+\definecolor{axInk}{HTML}{1A1A1F}
+\definecolor{axGround}{HTML}{F8F6F1}
+\definecolor{axAccent}{HTML}{BF5700}
+\definecolor{axInkSoft}{HTML}{6A6A72}
+\definecolor{axRule}{HTML}{D8D3C9}
+\definecolor{axAccentDeep}{HTML}{8A3D00}
+\definecolor{axAccentWash}{HTML}{F4E4D8}
+
+% Aliases for semantic roles in a paper:
+\colorlet{axClaim}{axAccent}        % highlight a claim or theorem statement
+\colorlet{axProof}{axInkSoft}       % secondary annotation (margin notes, etc.)
+\colorlet{axFigRule}{axRule}        % figure separators and subtle rules
+
+% ----------------------------------------------------- Typography
+% TeX Gyre Pagella for body (Palatino-compatible serif, open source).
+% Swap for `libertinus` or `newpxtext` if preferred.
+\usepackage{tgpagella}
+\usepackage[T1]{fontenc}
+
+% Space Grotesk (or a Helvetica-family fallback) for sans — figure labels,
+% captions, section-number display.
+% Requires XeLaTeX or LuaLaTeX to use system fonts directly:
+%   \usepackage{fontspec}
+%   \setsansfont{Space Grotesk}
+% For pdflatex, fall back to helvet:
+\usepackage[scaled=0.92]{helvet}
+
+% ----------------------------------------------------- Hyperref styling
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=axAccent,
+    citecolor=axAccent,
+    urlcolor=axAccent,
+    filecolor=axAccent,
+}
+
+% ----------------------------------------------------- Caption style
+\usepackage[font=small,labelfont={bf,color=axInk},textfont=it]{caption}
+
+% ----------------------------------------------------- Axiom Labs footer mark
+% Use \axiomLabsStamp in a footer / paper-ending position. Renders the name
+% set in the brand's caps-tracked style. No mark glyph — just the words.
+\newcommand{\axiomLabsStamp}{%
+    {\sffamily\selectfont
+     \textls[180]{\scshape\footnotesize\color{axInkSoft}AXIOM LABS}}%
+}
+
+% End of preamble.

@@ -1,0 +1,163 @@
+# Copyright (c) 2026 B-Tree Ventures, LLC
+# SPDX-License-Identifier: Apache-2.0
+#
+# Axiom Labs — reusable Python release workflow.
+#
+# Triggered by a tag push in the consumer repo. Builds the wheel + sdist,
+# signs them with Sigstore, publishes to PyPI via Trusted Publisher, and
+# creates a GitHub Release with auto-generated notes. A post-publish step
+# polls PyPI until the version is resolvable — the loudest possible signal
+# that the tag → PyPI link is wired up correctly.
+#
+# REQUIRES trusted-publisher configuration on PyPI:
+#   https://docs.pypi.org/trusted-publishers/adding-a-publisher/
+# Set the workflow name to `release.yml` in the consumer repo's caller stub.
+#
+# Consumer usage (in .github/workflows/release.yml of the consumer repo):
+#     name: release
+#     on:
+#       push:
+#         tags: ['v*']
+#     jobs:
+#       release:
+#         uses: axiom-labs-os/.github/.github/workflows/python-release.yml@v1
+#         with:
+#           package-name: dendra
+#           pypi-project: dendra          # canonical name on PyPI
+#           pypi-environment: pypi         # name of the protected environment
+
+name: python-release
+
+on:
+  workflow_call:
+    inputs:
+      package-name:
+        description: 'Package import name (for sanity-checking the built wheel).'
+        type: string
+        required: true
+      pypi-project:
+        description: 'Canonical project name on PyPI (may differ from import name).'
+        type: string
+        required: true
+      pypi-environment:
+        description: 'Name of the protected deployment environment in the repo.'
+        type: string
+        default: 'pypi'
+      python-version:
+        description: 'Python version used for the build.'
+        type: string
+        default: '3.13'
+      smoke-timeout-minutes:
+        description: 'Minutes to wait for the published version to appear on PyPI.'
+        type: number
+        default: 5
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build sdist + wheel
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.extract.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ inputs.python-version }}
+          cache: pip
+      - run: pip install build
+      - run: python -m build
+      - id: extract
+        name: Extract version from built wheel
+        run: |
+          wheel=$(ls dist/*.whl | head -1)
+          # Normalize hyphens→underscores (PEP 625) when sniffing the filename.
+          norm=$(echo "${{ inputs.pypi-project }}" | tr '-' '_')
+          version=$(basename "$wheel" | sed -E "s/^${norm}-([^-]+)-.*/\1/")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Publishing version: $version"
+      - name: Verify importability
+        run: |
+          pip install dist/*.whl
+          python -c "import ${{ inputs.package-name }}; print(${{ inputs.package-name }}.__name__)"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  sign:
+    name: Sigstore sign
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: sigstore/gh-action-sigstore-python@v3.0.0
+        with:
+          inputs: ./dist/*.tar.gz ./dist/*.whl
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-signed
+          path: dist/
+
+  publish:
+    name: Publish to PyPI
+    needs: [build, sign]
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.pypi-environment }}
+    permissions:
+      id-token: write
+      contents: write
+    outputs:
+      version: ${{ needs.build.outputs.version }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-signed
+          path: dist/
+      - name: Strip sigstore artifacts before upload
+        # pypa/gh-action-pypi-publish only wants wheel + sdist in dist/.
+        # Signatures land at the GitHub Release via softprops below.
+        run: |
+          mkdir -p signatures/
+          mv dist/*.sigstore* signatures/ 2>/dev/null || true
+      - uses: pypa/gh-action-pypi-publish@release/v1
+      - name: GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*
+            signatures/*
+          generate_release_notes: true
+
+  smoke:
+    name: Post-publish PyPI smoke
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for PyPI to index the new version
+        env:
+          VERSION: ${{ needs.publish.outputs.version }}
+          PROJECT: ${{ inputs.pypi-project }}
+          TIMEOUT_MIN: ${{ inputs.smoke-timeout-minutes }}
+        run: |
+          set -euo pipefail
+          pip install --upgrade pip
+          attempts=$(( TIMEOUT_MIN * 6 ))
+          for i in $(seq 1 "$attempts"); do
+            if pip index versions "$PROJECT" 2>/dev/null | grep -q "$VERSION"; then
+              echo "ok: $PROJECT $VERSION is resolvable from PyPI"
+              exit 0
+            fi
+            echo "attempt $i/$attempts: $PROJECT $VERSION not yet indexed, sleeping 10s..."
+            sleep 10
+          done
+          echo "::error::$PROJECT $VERSION still not on PyPI after $TIMEOUT_MIN minutes"
+          echo "check: https://pypi.org/manage/project/$PROJECT/settings/publishing/"
+          exit 1

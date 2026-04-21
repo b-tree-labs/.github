@@ -1,0 +1,96 @@
+# Copyright (c) 2026 B-Tree Ventures, LLC
+# SPDX-License-Identifier: Apache-2.0
+#
+# Axiom Labs — reusable security scan workflow.
+#
+# OSS-only tool stack: grype for vulnerability scanning, REUSE for
+# license-compliance lint, gitleaks for secret detection. Runs on PR and
+# on a weekly schedule set by the consumer.
+#
+# Consumer usage (supports schedule in the caller):
+#     name: security
+#     on:
+#       pull_request:
+#       schedule:
+#         - cron: '0 7 * * 1'   # Mondays 07:00 UTC
+#     jobs:
+#       scan:
+#         uses: axiom-labs-os/.github/.github/workflows/security-scan.yml@v1
+#         with:
+#           package-name: dendra
+
+name: security-scan
+
+on:
+  workflow_call:
+    inputs:
+      package-name:
+        description: 'Package import name (for logging).'
+        type: string
+        required: true
+      fail-on-severity:
+        description: 'grype severity threshold at which the job fails (negligible, low, medium, high, critical).'
+        type: string
+        default: 'high'
+      reuse-enabled:
+        description: 'Run REUSE license-compliance check.'
+        type: boolean
+        default: true
+      gitleaks-enabled:
+        description: 'Run gitleaks secret-detection scan.'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  vulnerabilities:
+    name: Vulnerability scan (grype)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+      - name: Build SBOM (syft)
+        uses: anchore/sbom-action@v0
+        with:
+          path: .
+          format: cyclonedx-json
+          output-file: sbom.cdx.json
+      - name: Scan (grype)
+        uses: anchore/scan-action@v3
+        id: grype
+        with:
+          sbom: sbom.cdx.json
+          fail-build: true
+          severity-cutoff: ${{ inputs.fail-on-severity }}
+          output-format: sarif
+      - name: Upload SARIF
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: ${{ steps.grype.outputs.sarif }}
+
+  license:
+    name: License compliance (REUSE)
+    if: inputs.reuse-enabled
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: fsfe/reuse-action@v4
+
+  secrets:
+    name: Secret scan (gitleaks)
+    if: inputs.gitleaks-enabled
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

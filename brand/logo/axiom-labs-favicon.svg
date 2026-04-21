@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Favicon / low-res variant — ember tick dropped (invisible below 48px).
+     Glyph is slightly larger and the center node heavier for legibility at 16–32 px. -->
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" fill="#f8f6f1"/>
+  <line x1="64" y1="256" x2="448" y2="256"
+        stroke="#1a1a1f" stroke-width="48"
+        stroke-linecap="square"/>
+  <line x1="256" y1="64" x2="256" y2="448"
+        stroke="#1a1a1f" stroke-width="48"
+        stroke-linecap="square"/>
+  <circle cx="256" cy="256" r="40" fill="#1a1a1f"/>
+</svg>
