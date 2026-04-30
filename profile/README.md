@@ -2,7 +2,7 @@
   <img src="../brand/logo/axiom-labs-mark-1024.png" width="160" alt="B-Tree Labs" />
 </p>
 
-<h1 align="center">Axiom Labs</h1>
+<h1 align="center">B-Tree Labs</h1>
 
 <p align="center">
   <em>Research-grade infrastructure for agentic systems.</em>
