@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../brand/logo/axiom-labs-mark-1024.png" width="160" alt="Axiom Labs" />
+  <img src="../brand/logo/axiom-labs-mark-1024.png" width="160" alt="B-Tree Labs" />
 </p>
 
 <h1 align="center">Axiom Labs</h1>
