@@ -10,9 +10,9 @@
 
 ---
 
-B-Tree Labs builds machine learning the substrate that composable 
-agentic systems run on — memory, federation, classification, governance,
-and publishes the research that motivates our designs. 
+B-Tree Labs builds data infrastructure, machine learning for research, 
+and the substrate composable agentic systems run on — memory, federation, 
+classification, governance, and publishes the research that motivates our designs. 
 
 ## Active products
 
