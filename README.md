@@ -27,9 +27,6 @@ and the brand system.
 └── README.md                 This file.
 ```
 
-(Brand asset filenames are mid-rename from the prior Axiom Labs DBA;
-the on-disk filenames update separately.)
-
 ## Using the reusable workflows
 
 Each workflow is a `workflow_call` target. Consumer repos add a short caller

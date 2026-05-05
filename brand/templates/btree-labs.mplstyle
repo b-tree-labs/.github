@@ -1,8 +1,8 @@
-# Axiom Labs matplotlib style.
+# B-Tree Labs matplotlib style.
 #
 # Usage in a paper or notebook:
 #     import matplotlib.pyplot as plt
-#     plt.style.use("path/to/axiom-labs.mplstyle")
+#     plt.style.use("path/to/btree-labs.mplstyle")
 #
 # Matches the brand palette: graphite ink on warm off-white, with burnt orange
 # reserved as the single accent. Typography uses Space Grotesk if installed,

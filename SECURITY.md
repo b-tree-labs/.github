@@ -25,7 +25,7 @@ default, only the latest minor release line is actively supported.
 ## Scope
 
 This policy applies to all repositories under the
-[Axiom Labs](https://github.com/axiom-labs-os) organization.
+[B-Tree Labs](https://github.com/b-tree-labs) organization.
 
 ## Safe harbor
 

@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="../brand/logo/btree-labs-mark-1024.png" width="160" alt="B-Tree Labs" />
+</p>
+
 <h1 align="center">B-Tree Labs</h1>
 
 <p align="center">

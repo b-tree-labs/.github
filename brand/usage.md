@@ -12,7 +12,7 @@ Minimum clear space around the mark = the height of the mark's center node (≈ 
 | UI avatar | 32 × 32 px |
 | Print | 0.25 inch across |
 
-Below these sizes, use the simplified `axiom-labs-favicon.svg` variant (no ember tick, heavier center node).
+Below these sizes, use the simplified `btree-labs-favicon.svg` variant (no ember tick, heavier center node).
 
 ## Mark vs. wordmark
 
@@ -21,16 +21,16 @@ Below these sizes, use the simplified `axiom-labs-favicon.svg` variant (no ember
 | GitHub avatar, app icon, favicon | Mark alone (on ground) |
 | Website header, README hero, slide titles | Horizontal wordmark |
 | Book cover, poster, square social | Stacked wordmark |
-| In running text | Never use the mark inline. Write "Axiom Labs" in the body font. |
+| In running text | Never use the mark inline. Write "B-Tree Labs" in the body font. |
 
-## Axiom Labs vs. Axiom (the platform)
+## B-Tree Labs vs. Axiom (the platform)
 
 One mark serves both. Wordmark disambiguates:
 
-- `[mark] AXIOM LABS` — the lab, the company, the org
-- `[mark] AXIOM` — the flagship platform product (sans "LABS")
+- `[mark] B-TREE LABS` — the lab, the company, the org
+- `[mark] AXIOM` — the flagship platform product
 
-Other products in the portfolio (Dendra, Vyzier, …) get **their own distinct marks** in the same visual language (same palette, same stroke weight, different glyph). They are *not* variations of the origin glyph.
+Other products in the portfolio (Dendra, Axiom, Vyzier, …) get **their own distinct marks** in the same visual language (same palette, same stroke weight, different glyph). They are *not* variations of the origin glyph.
 
 ## Don'ts
 

@@ -50,10 +50,10 @@ Base 16 px. Ratio 1.25 (major third).
 
 ## Paper / LaTeX
 
-See `templates/axiom-labs-preamble.tex`. Papers use a serif face for body (TeX Gyre Pagella) and Space Grotesk for figure labels and titles. The justification: academic convention expects a serif body; branded display still reads on figures and covers.
+See `templates/btree-labs-preamble.tex`. Papers use a serif face for body (TeX Gyre Pagella) and Space Grotesk for figure labels and titles. The justification: academic convention expects a serif body; branded display still reads on figures and covers.
 
 ## Usage rules
 
 - **Never** stretch, slant, or outline the wordmark typography. If you need a different weight, use it; don't manufacture one.
-- **Never** reset wordmark tracking. `0.18em` caps-tracking is what makes "AXIOM LABS" look like the wordmark and not just the words.
+- **Never** reset wordmark tracking. `0.18em` caps-tracking is what makes "B-TREE LABS" look like the wordmark and not just the words.
 - **Do** outline text in production SVG exports (Inkscape: Path → Object to Path). Rendering-device font substitution is the #1 cause of wordmark drift.

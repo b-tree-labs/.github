@@ -1,7 +1,7 @@
 # Copyright (c) 2026 B-Tree Ventures, LLC
 # SPDX-License-Identifier: Apache-2.0
 #
-# Axiom Labs — reusable Python CI workflow.
+# B-Tree Labs — reusable Python CI workflow.
 #
 # Runs lint (ruff check + format), matrix unit tests with coverage, a
 # pre-commit dry-run, and an optional provenance-pattern scan. Uploads
@@ -10,7 +10,7 @@
 # Consumer usage:
 #     jobs:
 #       ci:
-#         uses: axiom-labs-os/.github/.github/workflows/python-ci.yml@v1
+#         uses: b-tree-labs/.github/.github/workflows/python-ci.yml@v1
 #         with:
 #           package-name: dendra
 #           python-versions: '["3.10","3.11","3.12","3.13"]'

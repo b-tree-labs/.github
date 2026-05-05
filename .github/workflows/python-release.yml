@@ -1,7 +1,7 @@
 # Copyright (c) 2026 B-Tree Ventures, LLC
 # SPDX-License-Identifier: Apache-2.0
 #
-# Axiom Labs — reusable Python release workflow.
+# B-Tree Labs — reusable Python release workflow.
 #
 # Triggered by a tag push in the consumer repo. Builds the wheel + sdist,
 # signs them with Sigstore, publishes to PyPI via Trusted Publisher, and
@@ -20,7 +20,7 @@
 #         tags: ['v*']
 #     jobs:
 #       release:
-#         uses: axiom-labs-os/.github/.github/workflows/python-release.yml@v1
+#         uses: b-tree-labs/.github/.github/workflows/python-release.yml@v1
 #         with:
 #           package-name: dendra
 #           pypi-project: dendra          # canonical name on PyPI

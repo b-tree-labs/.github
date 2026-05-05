@@ -21,21 +21,21 @@ HERE = pathlib.Path(__file__).parent
 # (svg-filename, [(png-filename, px), ...])
 JOBS = [
     (
-        "axiom-labs-favicon.svg",
+        "btree-labs-favicon.svg",
         [
-            ("axiom-labs-favicon-16.png", 16),
-            ("axiom-labs-favicon-32.png", 32),
-            ("axiom-labs-favicon-180.png", 180),
-            ("axiom-labs-favicon-512.png", 512),
+            ("btree-labs-favicon-16.png", 16),
+            ("btree-labs-favicon-32.png", 32),
+            ("btree-labs-favicon-180.png", 180),
+            ("btree-labs-favicon-512.png", 512),
         ],
     ),
-    ("axiom-labs-mark.svg", [("axiom-labs-mark-1024.png", 1024)]),
-    ("axiom-labs-mark-dark.svg", [("axiom-labs-mark-dark-1024.png", 1024)]),
-    ("axiom-labs-mark-mono-light.svg", [("axiom-labs-mark-mono-light-1024.png", 1024)]),
-    ("axiom-labs-mark-mono-dark.svg", [("axiom-labs-mark-mono-dark-1024.png", 1024)]),
-    ("axiom-labs-wordmark-horizontal.svg", [("axiom-labs-wordmark-horizontal.png", 2400)]),
-    ("axiom-labs-wordmark-stacked.svg", [("axiom-labs-wordmark-stacked.png", 1600)]),
-    ("axiom-labs-social-card.svg", [("axiom-labs-social-card.png", 1200)]),
+    ("btree-labs-mark.svg", [("btree-labs-mark-1024.png", 1024)]),
+    ("btree-labs-mark-dark.svg", [("btree-labs-mark-dark-1024.png", 1024)]),
+    ("btree-labs-mark-mono-light.svg", [("btree-labs-mark-mono-light-1024.png", 1024)]),
+    ("btree-labs-mark-mono-dark.svg", [("btree-labs-mark-mono-dark-1024.png", 1024)]),
+    ("btree-labs-wordmark-horizontal.svg", [("btree-labs-wordmark-horizontal.png", 2400)]),
+    ("btree-labs-wordmark-stacked.svg", [("btree-labs-wordmark-stacked.png", 1600)]),
+    ("btree-labs-social-card.svg", [("btree-labs-social-card.png", 1200)]),
 ]
 
 

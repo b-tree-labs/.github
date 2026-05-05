@@ -1,7 +1,7 @@
 # Copyright (c) 2026 B-Tree Ventures, LLC
 # SPDX-License-Identifier: Apache-2.0
 #
-# Axiom Labs — reusable MkDocs Material deploy workflow.
+# B-Tree Labs — reusable MkDocs Material deploy workflow.
 #
 # Builds docs with MkDocs Material and deploys to GitHub Pages on push to
 # main. Safe to skip for repos without a docs site.
@@ -9,7 +9,7 @@
 # Consumer usage:
 #     jobs:
 #       docs:
-#         uses: axiom-labs-os/.github/.github/workflows/python-docs.yml@v1
+#         uses: b-tree-labs/.github/.github/workflows/python-docs.yml@v1
 #         with:
 #           package-name: dendra
 #           docs-extras: 'docs'
