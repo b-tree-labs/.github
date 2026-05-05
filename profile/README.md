@@ -24,7 +24,6 @@ our designs.
 
 ## Get in touch
 
-- Website — [b-treeventures.com](https://b-treeventures.com)
 - Trademarks / licensing — `trademarks@b-treeventures.com`, `licensing@b-treeventures.com`
 - Security disclosures — see each repo's `SECURITY.md`
 
