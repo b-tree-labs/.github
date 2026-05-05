@@ -1,6 +1,6 @@
-# Axiom Labs — `.github`
+# B-Tree Labs — `.github`
 
-Meta-repo for the [Axiom Labs](https://github.com/axiom-labs-os) organization.
+Meta-repo for the [B-Tree Labs](https://github.com/b-tree-labs) organization.
 Hosts the org profile, community health files, reusable CI/CD workflows,
 and the brand system.
 
@@ -19,13 +19,16 @@ and the brand system.
 │   ├── typography.md           Space Grotesk + system-stack body + scale.
 │   ├── usage.md                Clear space, minimums, mark-vs-wordmark rules.
 │   └── templates/
-│       ├── axiom-labs.mplstyle         matplotlib style for paper figures.
-│       └── axiom-labs-preamble.tex     LaTeX preamble for paper submissions.
-├── profile/README.md         Org landing page, rendered at github.com/axiom-labs-os.
+│       ├── btree-labs.mplstyle         matplotlib style for paper figures.
+│       └── btree-labs-preamble.tex     LaTeX preamble for paper submissions.
+├── profile/README.md         Org landing page, rendered at github.com/b-tree-labs.
 ├── CODE_OF_CONDUCT.md        Contributor Covenant v2.1.
 ├── SECURITY.md               Vulnerability disclosure policy.
 └── README.md                 This file.
 ```
+
+(Brand asset filenames are mid-rename from the prior Axiom Labs DBA;
+the on-disk filenames update separately.)
 
 ## Using the reusable workflows
 
@@ -39,7 +42,7 @@ on:
   pull_request: { branches: [main] }
 jobs:
   ci:
-    uses: axiom-labs-os/.github/.github/workflows/python-ci.yml@v1
+    uses: b-tree-labs/.github/.github/workflows/python-ci.yml@v1
     with:
       package-name: dendra
       python-versions: '["3.10","3.11","3.12","3.13"]'
@@ -66,4 +69,4 @@ Requires `cairosvg`.
 Code: Apache-2.0. Brand and documentation: CC-BY-4.0 (unless a specific
 file states otherwise in its SPDX header).
 
-Copyright © 2026 B-Tree Ventures, LLC. DBA Axiom Labs.
+Copyright © 2026 B-Tree Ventures, LLC. DBA B-Tree Labs.
