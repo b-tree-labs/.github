@@ -22,7 +22,7 @@ and the brand system.
 │       ├── btree-labs.mplstyle         matplotlib style for paper figures.
 │       └── btree-labs-preamble.tex     LaTeX preamble for paper submissions.
 ├── profile/README.md         Org landing page, rendered at github.com/b-tree-labs.
-├── CODE_OF_CONDUCT.md        Contributor Covenant v2.1.
+├── CODE_OF_CONDUCT.md        Minimal professional-conduct policy.
 ├── SECURITY.md               Vulnerability disclosure policy.
 └── README.md                 This file.
 ```
