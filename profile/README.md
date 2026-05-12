@@ -19,7 +19,7 @@ our designs.
 
 | Project | What it does | Status |
 |---|---|---|
-| **[Dendra](https://dendra.run)** | Graduated-autonomy classification primitive (rule → LLM → ML in six phases, library-first) | v1.0 launching 2026-05-13 |
+| **[Dendra](https://dendra.run)** | Graduated-autonomy classification primitive (rule → LLM → ML in six phases, library-first) | v1.1.0 launching 2026-05-20 |
 | **Axiom** | Composable, extensible, LLM-agnostic agentic operating system — unified personal and organization memory, federation, and publishing | In development |
 
 ## Get in touch
