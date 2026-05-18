@@ -19,7 +19,7 @@ our designs.
 
 | Project | What it does | Status |
 |---|---|---|
-| **[Dendra](https://dendra.run)** | Graduated-autonomy classification primitive (rule → LLM → ML in six phases, library-first) | v1.1.0 launching 2026-05-20 |
+| **[Postrule](https://postrule.ai)** | Self-taught classifiers. Graduated-autonomy primitive (rule → LLM → ML) with statistically-gated phase transitions and the rule retained as a safety floor. | v1.1.0 launching 2026-05-27 |
 | **Axiom** | Composable, extensible, LLM-agnostic agentic operating system — unified personal and organization memory, federation, and publishing | In development |
 
 ## Get in touch
