@@ -91,13 +91,16 @@ jobs:
       - name: Check SPDX headers on tracked source files
         run: |
           set -euo pipefail
-          # Source extensions we require headers on. Data/lockfiles/assets
-          # and generated dirs are exempt.
+          # Require headers on first-party CODE only. YAML/config and
+          # user-facing templates are intentionally excluded — adding our
+          # copyright to a template a consumer copies would be wrong, and
+          # config files (.pre-commit-config, etc.) aren't source.
           mapfile -t files < <(git ls-files \
-            '*.py' '*.ts' '*.tsx' '*.js' '*.mjs' '*.sh' '*.yml' '*.yaml' \
+            '*.py' '*.ts' '*.tsx' '*.js' '*.mjs' '*.sh' \
             ':!:**/__postrule_generated__/**' \
             ':!:**/node_modules/**' \
-            ':!:**/*.lock' \
+            ':!:**/*.min.js' \
+            ':!:**/*template*' \
             ':!:**/vendor/**')
           missing=()
           for f in "${files[@]}"; do
