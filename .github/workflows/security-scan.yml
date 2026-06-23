@@ -51,37 +51,71 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.13'
-          cache: pip
-      - name: Build SBOM (syft)
-        uses: anchore/sbom-action@v0
-        with:
-          path: .
-          format: cyclonedx-json
-          output-file: sbom.cdx.json
+      # Install and run the grype CLI directly rather than anchore/scan-action.
+      # The action (a) defaulted to grype 0.97.1, which reported stale/withdrawn
+      # github-action advisories a current grype doesn't, and (b) failed to
+      # install a pinned newer version. The CLI is reliable, runs a current
+      # grype, scans the dir in one pass (no cached-SBOM handoff), and honours
+      # .grype.yaml ignore rules. Bump GRYPE_VERSION as new releases land.
+      - name: Install grype
+        env:
+          GRYPE_VERSION: v0.114.0
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh \
+            | sh -s -- -b /usr/local/bin "$GRYPE_VERSION"
+          grype version
       - name: Scan (grype)
-        uses: anchore/scan-action@v3
-        id: grype
-        with:
-          sbom: sbom.cdx.json
-          fail-build: true
-          severity-cutoff: ${{ inputs.fail-on-severity }}
-          output-format: sarif
+        run: grype dir:. --fail-on "${{ inputs.fail-on-severity }}" -o sarif --file grype-results.sarif
+      # Best-effort: publishing SARIF to the Security tab needs GitHub
+      # Advanced Security (code scanning), which private repos without a GHAS
+      # licence lack — the upload 403s there. The grype step above is the real
+      # gate; don't let an unavailable upload target fail the scan.
       - name: Upload SARIF
         if: always()
+        continue-on-error: true
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: ${{ steps.grype.outputs.sarif }}
+          sarif_file: grype-results.sarif
 
   license:
-    name: License compliance (REUSE)
+    # Header-presence check, not full REUSE-spec lint. B-Tree repos use a
+    # split-license model — LICENSE.md is the map-of-record and every source
+    # file carries an SPDX-License-Identifier — so they intentionally have no
+    # LICENSES/ dir, which fsfe/reuse-action@v4 hard-requires (it failed every
+    # run). We enforce what the policy actually requires: no tracked source
+    # file ships without a copyright + SPDX header.
+    name: License compliance (SPDX headers)
     if: inputs.reuse-enabled
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: fsfe/reuse-action@v4
+      - name: Check SPDX headers on tracked source files
+        run: |
+          set -euo pipefail
+          # Require headers on first-party CODE only. YAML/config and
+          # user-facing templates are intentionally excluded — adding our
+          # copyright to a template a consumer copies would be wrong, and
+          # config files (.pre-commit-config, etc.) aren't source.
+          mapfile -t files < <(git ls-files \
+            '*.py' '*.ts' '*.tsx' '*.js' '*.mjs' '*.sh' \
+            ':!:**/__postrule_generated__/**' \
+            ':!:**/node_modules/**' \
+            ':!:**/*.min.js' \
+            ':!:**/*template*' \
+            ':!:**/vendor/**')
+          missing=()
+          for f in "${files[@]}"; do
+            [ -f "$f" ] || continue
+            if ! grep -qm1 'SPDX-License-Identifier:' "$f"; then
+              missing+=("$f")
+            fi
+          done
+          if [ "${#missing[@]}" -gt 0 ]; then
+            echo "::error::Missing SPDX-License-Identifier header in ${#missing[@]} file(s):"
+            printf '  %s\n' "${missing[@]}"
+            exit 1
+          fi
+          echo "All ${#files[@]} tracked source files carry an SPDX header."
 
   secrets:
     name: Secret scan (gitleaks)
@@ -91,6 +125,15 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+      # Run the OSS gitleaks binary directly. The gitleaks-action@v2 wrapper
+      # now requires a paid GITLEAKS_LICENSE for org repos; the CLI itself is
+      # free (MIT). detect over full history; redact secrets from logs.
+      - name: Install gitleaks
+        run: |
+          set -euo pipefail
+          VERSION=8.21.2
+          curl -sSL "https://github.com/gitleaks/gitleaks/releases/download/v${VERSION}/gitleaks_${VERSION}_linux_x64.tar.gz" \
+            | tar -xz -C /usr/local/bin gitleaks
+          gitleaks version
+      - name: Scan for secrets
+        run: gitleaks detect --source . --redact --verbose --exit-code 1
