@@ -51,34 +51,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.13'
-          # No `cache: pip` — it hard-fails on repos without a root
-          # requirements.txt/pyproject.toml, and this scan must run anywhere.
-      # Direct dir-scan: grype builds the SBOM in-process and scans it in one
-      # step. We deliberately do NOT pre-build with anchore/sbom-action and
-      # hand grype the file — that path re-used a prior run's cached SBOM
-      # artifact, so grype scanned stale dependency versions and failed on
-      # already-fixed vulns. Direct scan also honours .grype.yaml ignore rules.
+      # Install and run the grype CLI directly rather than anchore/scan-action.
+      # The action (a) defaulted to grype 0.97.1, which reported stale/withdrawn
+      # github-action advisories a current grype doesn't, and (b) failed to
+      # install a pinned newer version. The CLI is reliable, runs a current
+      # grype, scans the dir in one pass (no cached-SBOM handoff), and honours
+      # .grype.yaml ignore rules. Bump GRYPE_VERSION as new releases land.
+      - name: Install grype
+        env:
+          GRYPE_VERSION: v0.114.0
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh \
+            | sh -s -- -b /usr/local/bin "$GRYPE_VERSION"
+          grype version
       - name: Scan (grype)
-        uses: anchore/scan-action@v6
-        id: grype
-        with:
-          path: "."
-          fail-build: true
-          severity-cutoff: ${{ inputs.fail-on-severity }}
-          output-format: sarif
-          # Pin a current grype. scan-action@v6 defaults to grype 0.97.1,
-          # which reported stale/withdrawn matches (github-action advisories
-          # since corrected) that a current grype does not — turning the gate
-          # into noise. Bump this as new grype releases land.
-          grype-version: '0.114.0'
+        run: grype dir:. --fail-on "${{ inputs.fail-on-severity }}" -o sarif --file grype-results.sarif
       - name: Upload SARIF
         if: always()
         uses: github/codeql-action/upload-sarif@v3
         with:
-          sarif_file: ${{ steps.grype.outputs.sarif }}
+          sarif_file: grype-results.sarif
 
   license:
     # Header-presence check, not full REUSE-spec lint. B-Tree repos use a
