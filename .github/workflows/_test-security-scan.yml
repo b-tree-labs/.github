@@ -1,0 +1,20 @@
+# Copyright (c) 2026 B-Tree Ventures, LLC
+# SPDX-License-Identifier: Apache-2.0
+#
+# TEMPORARY self-test caller for the security-scan reusable. Validates the
+# tooling fixes (grype v6, OSS gitleaks, SPDX header check) on this branch
+# before the v1 tag is moved. Removed before merge to main.
+name: _test-security-scan
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  scan:
+    uses: ./.github/workflows/security-scan.yml
+    with:
+      package-name: selftest
+      fail-on-severity: high
+    permissions:
+      contents: read
+      security-events: write
