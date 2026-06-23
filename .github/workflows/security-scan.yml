@@ -69,6 +69,25 @@ jobs:
           fail-build: true
           severity-cutoff: ${{ inputs.fail-on-severity }}
           output-format: sarif
+      - name: DEBUG dump grype findings
+        if: always()
+        run: |
+          python3 - "${{ steps.grype.outputs.sarif }}" <<'PY'
+          import json, sys
+          d = json.load(open(sys.argv[1]))
+          for run in d.get("runs", []):
+              rules = {r["id"]: r for r in run.get("tool", {}).get("driver", {}).get("rules", [])}
+              for res in run.get("results", []):
+                  rid = res.get("ruleId", "")
+                  sev = (rules.get(rid, {}).get("properties", {}) or {}).get("security-severity", "0")
+                  loc = (res.get("locations") or [{}])[0].get("physicalLocation", {}).get("artifactLocation", {}).get("uri", "")
+                  try:
+                      hi = float(sev) >= 7.0
+                  except ValueError:
+                      hi = False
+                  if hi:
+                      print(f"SEV={sev} RULE={rid} LOC={loc} :: {res.get('message',{}).get('text','')[:140]}")
+          PY
       - name: Upload SARIF
         if: always()
         uses: github/codeql-action/upload-sarif@v3
