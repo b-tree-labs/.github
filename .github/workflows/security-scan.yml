@@ -66,8 +66,13 @@ jobs:
           grype version
       - name: Scan (grype)
         run: grype dir:. --fail-on "${{ inputs.fail-on-severity }}" -o sarif --file grype-results.sarif
+      # Best-effort: publishing SARIF to the Security tab needs GitHub
+      # Advanced Security (code scanning), which private repos without a GHAS
+      # licence lack — the upload 403s there. The grype step above is the real
+      # gate; don't let an unavailable upload target fail the scan.
       - name: Upload SARIF
         if: always()
+        continue-on-error: true
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: grype-results.sarif
