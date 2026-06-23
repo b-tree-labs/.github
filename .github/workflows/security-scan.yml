@@ -56,17 +56,16 @@ jobs:
           python-version: '3.13'
           # No `cache: pip` — it hard-fails on repos without a root
           # requirements.txt/pyproject.toml, and this scan must run anywhere.
-      - name: Build SBOM (syft)
-        uses: anchore/sbom-action@v0
-        with:
-          path: .
-          format: cyclonedx-json
-          output-file: sbom.cdx.json
+      # Direct dir-scan: grype builds the SBOM in-process and scans it in one
+      # step. We deliberately do NOT pre-build with anchore/sbom-action and
+      # hand grype the file — that path re-used a prior run's cached SBOM
+      # artifact, so grype scanned stale dependency versions and failed on
+      # already-fixed vulns. Direct scan also honours .grype.yaml ignore rules.
       - name: Scan (grype)
         uses: anchore/scan-action@v6
         id: grype
         with:
-          sbom: sbom.cdx.json
+          path: "."
           fail-build: true
           severity-cutoff: ${{ inputs.fail-on-severity }}
           output-format: sarif
