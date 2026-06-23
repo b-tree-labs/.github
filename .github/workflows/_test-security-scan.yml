@@ -8,6 +8,8 @@ name: _test-security-scan
 
 on:
   workflow_dispatch: {}
+  push:
+    branches: [fix/security-scan-tooling]
 
 jobs:
   scan:
