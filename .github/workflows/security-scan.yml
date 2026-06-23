@@ -69,12 +69,11 @@ jobs:
           fail-build: true
           severity-cutoff: ${{ inputs.fail-on-severity }}
           output-format: sarif
-      - name: DEBUG grype table
-        if: always()
-        run: |
-          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /tmp/gb >/dev/null 2>&1
-          echo "===== GRYPE TABLE (High/Critical) ====="
-          /tmp/gb/grype dir:. -q 2>/dev/null | awk 'NR==1 || $0 ~ /High|Critical/'
+          # Pin a current grype. scan-action@v6 defaults to grype 0.97.1,
+          # which reported stale/withdrawn matches (github-action advisories
+          # since corrected) that a current grype does not — turning the gate
+          # into noise. Bump this as new grype releases land.
+          grype-version: '0.114.0'
       - name: Upload SARIF
         if: always()
         uses: github/codeql-action/upload-sarif@v3
