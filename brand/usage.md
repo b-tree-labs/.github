@@ -30,7 +30,7 @@ One mark serves both. Wordmark disambiguates:
 - `[mark] B-TREE LABS` — the lab, the company, the org
 - `[mark] AXIOM` — the flagship platform product
 
-Other products in the portfolio (Dendra, Axiom, Vyzier, …) get **their own distinct marks** in the same visual language (same palette, same stroke weight, different glyph). They are *not* variations of the origin glyph.
+Other products in the portfolio (Postrule, Axiom, …) get **their own distinct marks** in the same visual language (same palette, same stroke weight, different glyph). They are *not* variations of the origin glyph.
 
 ## Don'ts
 
@@ -41,7 +41,3 @@ Other products in the portfolio (Dendra, Axiom, Vyzier, …) get **their own dis
 - Don't add a drop shadow, bevel, or glow. The mark is flat.
 - Don't crop the mark. Use the masters provided.
 - Don't reconstruct the mark from primitives in downstream tools (Keynote, PowerPoint, Word). Import the SVG or PNG; never redraw.
-
-## Private heritage note
-
-The burnt orange accent is a private nod to UT Austin (PMS 159). **Never** make this connection in text. Public docs, code, commits, issue threads, and paper text are kept clean of `UT`, `UTexas`, and `bbooth@` references — pre-commit hooks and CI checks enforce this. The color carries the meaning silently.
