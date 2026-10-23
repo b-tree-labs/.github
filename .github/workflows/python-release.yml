@@ -22,8 +22,8 @@
 #       release:
 #         uses: b-tree-labs/.github/.github/workflows/python-release.yml@v1
 #         with:
-#           package-name: dendra
-#           pypi-project: dendra          # canonical name on PyPI
+#           package-name: postrule
+#           pypi-project: postrule        # canonical name on PyPI
 #           pypi-environment: pypi         # name of the protected environment
 
 name: python-release

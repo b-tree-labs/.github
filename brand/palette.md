@@ -45,7 +45,3 @@ Use these in CSS / matplotlib / LaTeX — not raw hex.
 | `#6a6a72` | `#f8f6f1` | 4.8 : 1 | AA |
 
 Rule of thumb: body text is graphite on warm-off-white. Burnt orange is an accent *shape*, not a text color.
-
-## Private heritage note
-
-Burnt orange is PMS 159 — UT Austin's official school color. The nod is intentional and symbolic. Public documentation, code, paper text, and repo contents **never** reference UT, UTexas, or bbooth@ — this is enforced by pre-commit hooks and CI checks across all public repos. The color carries the meaning silently; the words do not.

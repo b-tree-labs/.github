@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="../brand/logo/btree-labs-mark-1024.png" width="160" alt="B-Tree Labs" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/b-tree-labs/.github/main/brand/logo/btree-labs-mark-dark-1024.png" />
+    <img src="https://raw.githubusercontent.com/b-tree-labs/.github/main/brand/logo/btree-labs-mark-1024.png" width="160" alt="B-Tree Labs" />
+  </picture>
 </p>
 
 <h1 align="center">B-Tree Labs</h1>
@@ -15,12 +18,13 @@ and the substrate composable agentic systems run on — memory, federation,
 classification, governance — and publishes the research that motivates
 our designs.
 
-## Active products
+## Products
 
 | Project | What it does | Status |
 |---|---|---|
-| **[Postrule](https://postrule.ai)** | Self-taught classifiers. Graduated-autonomy primitive (rule → LLM → ML) with statistically-gated phase transitions and the rule retained as a safety floor. | v1.1.0 launching 2026-05-27 |
+| **[Postrule](https://github.com/b-tree-labs/postrule)** · [postrule.ai](https://postrule.ai) | Self-taught classifiers. Graduated-autonomy primitive (rule → LLM → ML) with statistically-gated phase transitions and the rule retained as a safety floor. | Released (v1.1.17) |
 | **Axiom** | Composable, extensible, LLM-agnostic agentic operating system — unified personal and organization memory, federation, and publishing | In development |
+| **[SMSpit](https://github.com/b-tree-labs/smspit)** | The Mailpit of SMS: a self-hosted SMS capture server for local dev and testing. | Released (v1.0.0) |
 
 ## Get in touch
 

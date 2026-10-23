@@ -17,7 +17,7 @@
 #       scan:
 #         uses: b-tree-labs/.github/.github/workflows/security-scan.yml@v1
 #         with:
-#           package-name: dendra
+#           package-name: postrule
 
 name: security-scan
 

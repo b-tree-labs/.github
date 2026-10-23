@@ -11,7 +11,7 @@
 #       docs:
 #         uses: b-tree-labs/.github/.github/workflows/python-docs.yml@v1
 #         with:
-#           package-name: dendra
+#           package-name: postrule
 #           docs-extras: 'docs'
 
 name: python-docs

@@ -41,10 +41,10 @@ jobs:
   ci:
     uses: b-tree-labs/.github/.github/workflows/python-ci.yml@v1
     with:
-      package-name: dendra
+      package-name: postrule
       python-versions: '["3.10","3.11","3.12","3.13"]'
       extras: 'dev,train,viz'
-      provenance-forbidden-patterns: 'utexas|UT Austin|bbooth@'
+      provenance-forbidden-patterns: ${{ vars.PROVENANCE_FORBIDDEN_PATTERNS }}
 ```
 
 Pin to a tag (`@v1`) in production; pin to a SHA for highest supply-chain
