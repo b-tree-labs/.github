@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="../brand/logo/btree-labs-mark-1024.png" width="160" alt="B-Tree Labs" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/b-tree-labs/.github/main/brand/logo/btree-labs-mark-dark-1024.png" />
+    <img src="https://raw.githubusercontent.com/b-tree-labs/.github/main/brand/logo/btree-labs-mark-1024.png" width="160" alt="B-Tree Labs" />
+  </picture>
 </p>
 
 <h1 align="center">B-Tree Labs</h1>
